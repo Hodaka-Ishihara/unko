@@ -7,8 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- 豪華な紙吹雪エフェクト用ライブラリ（canvas-confetti） -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* デフォルト：モダン・ブルー */
         :root[data-theme="modern"] {
             --color-bg: #f8fafc;
             --color-surface: #ffffff;
@@ -23,7 +24,6 @@
             --shadow-float: 0 12px 32px -4px rgba(15, 23, 42, 0.08);
         }
 
-        /* ウォーム・カフェ風 */
         :root[data-theme="warm"] {
             --color-bg: #fafaf9;
             --color-surface: #ffffff;
@@ -38,7 +38,6 @@
             --shadow-float: 0 12px 32px -4px rgba(41, 37, 36, 0.08);
         }
 
-        /* ダーク・ナイトモード */
         :root[data-theme="dark"] {
             --color-bg: #090d16;
             --color-surface: #111827;
@@ -75,7 +74,6 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* 公式サイト風ヘッダー */
         .official-header {
             background-color: var(--color-surface);
             border-bottom: 1px solid var(--color-border);
@@ -120,7 +118,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* テーマチェンジャーボタン群 */
         .theme-switcher {
             display: flex;
             gap: 6px;
@@ -148,7 +145,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* メインビジュアル / ヒーローセクション */
         .hero-section {
             max-width: 900px;
             margin: 32px auto 0;
@@ -202,14 +198,12 @@
             transform: translateY(-2px);
         }
 
-        /* コンテナ */
         .container {
             max-width: 900px;
             margin: 24px auto 0;
             padding: 0 24px;
         }
 
-        /* 検索コントロール */
         .search-panel {
             background: var(--color-surface);
             border: 1px solid var(--color-border);
@@ -265,7 +259,6 @@
             pointer-events: none;
         }
 
-        /* フィルタータブ */
         .filter-tabs {
             display: flex;
             gap: 8px;
@@ -291,7 +284,6 @@
             font-weight: 700;
         }
 
-        /* 件数表示 */
         .results-meta {
             font-size: 13px;
             font-weight: 700;
@@ -299,7 +291,6 @@
             margin-bottom: 16px;
         }
 
-        /* 店舗グリッド・カード */
         .store-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -412,12 +403,12 @@
             color: var(--color-accent);
         }
 
-        /* ガチャモーダル */
+        /* 豪華なガチャ・ルーレット演出用モーダル */
         .modal-backdrop {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(6px);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -437,34 +428,55 @@
             background: var(--color-surface);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-base);
-            padding: 32px;
-            max-width: 400px;
+            padding: 36px 32px;
+            max-width: 420px;
             width: 100%;
             text-align: center;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
 
         .modal-backdrop.active .modal-card {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
 
         .modal-eyebrow {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             color: var(--color-accent);
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
 
         .modal-store-title {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
             color: var(--color-primary);
             margin: 0 0 16px;
+            line-height: 1.4;
+        }
+
+        /* ルーレット回転中のエフェクト文字 */
+        .roulette-box {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text-sub);
+            padding: 20px 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-modal-action {
@@ -472,13 +484,18 @@
             color: var(--color-surface);
             border: none;
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
+            padding: 14px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 14px;
             cursor: pointer;
             margin-top: 20px;
             transition: var(--transition);
+        }
+
+        .btn-modal-action:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
@@ -513,14 +530,12 @@
 </head>
 <body data-theme="modern">
 
-<!-- 公式サイト風ヘッダー -->
 <header class="official-header">
     <div class="header-inner">
         <div class="brand-logo-area">
             <span class="brand-subtitle">Official Portal</span>
             <h1 class="brand-title">いい街こまつプレミアム</h1>
         </div>
-        <!-- デザインテーマ切り替えボタン -->
         <div class="theme-switcher">
             <button class="theme-btn active" onclick="setTheme('modern', this)">モダン</button>
             <button class="theme-btn" onclick="setTheme('warm', this)">ウォーム</button>
@@ -529,20 +544,18 @@
     </div>
 </header>
 
-<!-- ヒーローセクション -->
 <section class="hero-section">
     <div class="hero-banner">
         <div class="hero-text">
             <h2>取扱店・加盟店スマート検索</h2>
-            <p>お店選びに迷ったら、おすすめ店舗をランダムでご提案します。</p>
+            <p>お店選びに迷ったら、大抽選ルーレットで今日行くお店を決定！</p>
         </div>
         <button class="btn-gacha-official" onclick="runGacha()">
-            <span>🎲</span> 本日のピックアップ
+            <span>🎰</span> 運命のルーレットを回す
         </button>
     </div>
 </section>
 
-<!-- メインコンテンツ -->
 <main class="container">
     <div class="search-panel">
         <div class="input-group">
@@ -567,14 +580,19 @@
     <div id="results" class="store-grid"></div>
 </main>
 
-<!-- ガチャモーダル -->
+<!-- ガチャ・ルーレット演出モーダル -->
 <div id="gachaModal" class="modal-backdrop">
     <div class="modal-card">
-        <div class="modal-eyebrow">Recommended Pick</div>
-        <div id="gachaCatBadge" class="official-badge badge-cat" style="display:inline-block; margin-bottom: 8px;"></div>
-        <h3 id="gachaName" class="modal-store-title">店名</h3>
-        <a id="gachaMapLink" href="#" target="_blank" class="store-address-link" style="justify-content: center;">📍 Google Mapsでルートを確認</a>
-        <button class="btn-modal-action" onclick="closeGacha()">閉じる</button>
+        <div class="modal-eyebrow" id="modalEyebrow">✨ 抽選中... ✨</div>
+        <div id="rouletteArea" class="roulette-box">
+            <span id="rouletteText" style="font-size: 20px; font-weight: 800; color: var(--color-primary);">店舗を選んでいます...</span>
+        </div>
+        <div id="resultDetails" style="display: none;">
+            <div id="gachaCatBadge" class="official-badge badge-cat" style="display:inline-block; margin-bottom: 8px;"></div>
+            <h3 id="gachaName" class="modal-store-title">店名</h3>
+            <a id="gachaMapLink" href="#" target="_blank" class="store-address-link" style="justify-content: center;">📍 Google Mapsでルートを確認</a>
+        </div>
+        <button id="modalCloseBtn" class="btn-modal-action" onclick="closeGacha()" style="display: none;">決定する！</button>
     </div>
 </div>
 
@@ -585,7 +603,6 @@
     let favorites = JSON.parse(localStorage.getItem('komatsu_favs') || '[]');
     let visited = JSON.parse(localStorage.getItem('komatsu_visited') || '[]');
 
-    // テーマ切り替え・保存機能
     function setTheme(themeName, btn) {
         document.documentElement.setAttribute('data-theme', themeName);
         localStorage.setItem('komatsu_theme', themeName);
@@ -594,7 +611,6 @@
         if (btn) btn.classList.add('active');
     }
 
-    // 起動時に保存されたテーマを適用
     const savedTheme = localStorage.getItem('komatsu_theme') || 'modern';
     const initialBtn = Array.from(document.querySelectorAll('.theme-btn')).find(b => {
         if (savedTheme === 'modern') return b.textContent === 'モダン';
@@ -756,15 +772,75 @@
         filterStores();
     }
 
+    // 派手なルーレット＆紙吹雪演出付きガチャ機能
     function runGacha() {
         if (allStores.length === 0) return;
-        const randomStore = allStores[Math.floor(Math.random() * allStores.length)];
-        
-        document.getElementById('gachaName').textContent = randomStore.name;
-        document.getElementById('gachaCatBadge').textContent = randomStore.category;
-        document.getElementById('gachaMapLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('石川県小松市 ' + randomStore.name)}`;
-        
-        document.getElementById('gachaModal').classList.add('active');
+
+        const modal = document.getElementById('gachaModal');
+        const rouletteText = document.getElementById('rouletteText');
+        const resultDetails = document.getElementById('resultDetails');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalEyebrow = document.getElementById('modalEyebrow');
+
+        // 初期化（ルーレット中表示）
+        modalEyebrow.textContent = '✨ 抽選中... ✨';
+        rouletteText.style.display = 'block';
+        resultDetails.style.display = 'none';
+        modalCloseBtn.style.display = 'none';
+        modal.classList.add('active');
+
+        let counter = 0;
+        const maxCount = 20; // パラパラ変わる回数
+        let intervalTime = 50;
+
+        function shuffleAnimation() {
+            const tempStore = allStores[Math.floor(Math.random() * allStores.length)];
+            rouletteText.textContent = tempStore.name;
+            counter++;
+
+            if (counter < maxCount) {
+                intervalTime += 15; // 徐々にスローダウン
+                setTimeout(shuffleAnimation, intervalTime);
+            } else {
+                // 当選決定！
+                const finalStore = allStores[Math.floor(Math.random() * allStores.length)];
+                
+                modalEyebrow.textContent = '🎉 決定しました！ 🎉';
+                rouletteText.style.display = 'none';
+                
+                document.getElementById('gachaName').textContent = finalStore.name;
+                document.getElementById('gachaCatBadge').textContent = finalStore.category;
+                document.getElementById('gachaMapLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('石川県小松市 ' + finalStore.name)}`;
+                
+                resultDetails.style.display = 'block';
+                modalCloseBtn.style.display = 'block';
+
+                // 🌟 超豪華！画面いっぱいの紙吹雪（コンフェッティ）発射！
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+
+                // 2回に分けて華やかに散らす
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 80,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 80,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 300);
+            }
+        }
+
+        shuffleAnimation();
     }
 
     function closeGacha() {
