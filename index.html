@@ -4,23 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>いい街こまつプレミアム 取扱店公式ポータル</title>
-    <!-- Google Fonts: Plus Jakarta Sans & Noto Sans JP -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
+        /* デフォルト：モダン・ブルー */
+        :root[data-theme="modern"] {
             --color-bg: #f8fafc;
             --color-surface: #ffffff;
             --color-primary: #0f172a;
             --color-accent: #2563eb;
-            --color-accent-hover: #1d4ed8;
             --color-text-main: #1e293b;
             --color-text-sub: #64748b;
             --color-border: #e2e8f0;
             --color-tag-bg: #f1f5f9;
+            --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
             --shadow-float: 0 12px 32px -4px rgba(15, 23, 42, 0.08);
+        }
+
+        /* ウォーム・カフェ風 */
+        :root[data-theme="warm"] {
+            --color-bg: #fafaf9;
+            --color-surface: #ffffff;
+            --color-primary: #292524;
+            --color-accent: #d97706;
+            --color-text-main: #292524;
+            --color-text-sub: #78716c;
+            --color-border: #e7e5e4;
+            --color-tag-bg: #f5f5f4;
+            --hero-gradient: linear-gradient(135deg, #292524 0%, #78350f 100%);
+            --shadow-subtle: 0 4px 20px -2px rgba(41, 37, 36, 0.05);
+            --shadow-float: 0 12px 32px -4px rgba(41, 37, 36, 0.08);
+        }
+
+        /* ダーク・ナイトモード */
+        :root[data-theme="dark"] {
+            --color-bg: #090d16;
+            --color-surface: #111827;
+            --color-primary: #f3f4f6;
+            --color-accent: #38bdf8;
+            --color-text-main: #e5e7eb;
+            --color-text-sub: #9ca3af;
+            --color-border: #1f2937;
+            --color-tag-bg: #1f2937;
+            --hero-gradient: linear-gradient(135deg, #111827 0%, #0369a1 100%);
+            --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+            --shadow-float: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+        }
+
+        :root {
             --radius-base: 16px;
             --radius-pill: 9999px;
             --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -39,18 +72,20 @@
             color: var(--color-text-main);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* 公式サイト風ヘッダー */
         .official-header {
             background-color: var(--color-surface);
             border-bottom: 1px solid var(--color-border);
-            padding: 24px 0;
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--color-surface);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .header-inner {
@@ -85,6 +120,34 @@
             letter-spacing: -0.5px;
         }
 
+        /* テーマチェンジャーボタン群 */
+        .theme-switcher {
+            display: flex;
+            gap: 6px;
+            background: var(--color-tag-bg);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--color-border);
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-text-sub);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-btn.active {
+            background: var(--color-surface);
+            color: var(--color-primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
         /* メインビジュアル / ヒーローセクション */
         .hero-section {
             max-width: 900px;
@@ -93,7 +156,7 @@
         }
 
         .hero-banner {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: var(--hero-gradient);
             color: white;
             border-radius: var(--radius-base);
             padding: 36px 32px;
@@ -103,18 +166,6 @@
             box-shadow: var(--shadow-float);
             position: relative;
             overflow: hidden;
-        }
-
-        .hero-banner::after {
-            content: "";
-            position: absolute;
-            right: -30px;
-            bottom: -30px;
-            width: 180px;
-            height: 180px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 50%;
-            pointer-events: none;
         }
 
         .hero-text h2 {
@@ -127,12 +178,12 @@
         .hero-text p {
             margin: 0;
             font-size: 13px;
-            color: #94a3b8;
+            opacity: 0.8;
         }
 
         .btn-gacha-official {
             background: #ffffff;
-            color: var(--color-primary);
+            color: #0f172a;
             border: none;
             padding: 12px 22px;
             border-radius: var(--radius-pill);
@@ -149,7 +200,6 @@
 
         .btn-gacha-official:hover {
             transform: translateY(-2px);
-            background: #f8fafc;
         }
 
         /* コンテナ */
@@ -170,6 +220,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .input-group {
@@ -235,7 +286,7 @@
 
         .tab-btn.active {
             background: var(--color-primary);
-            color: white;
+            color: var(--color-surface);
             border-color: var(--color-primary);
             font-weight: 700;
         }
@@ -265,13 +316,11 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
         }
 
         .store-card:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-float);
-            border-color: #cbd5e1;
         }
 
         .card-header-row {
@@ -290,7 +339,6 @@
             line-height: 1.4;
         }
 
-        /* アクションアイコンボタン */
         .action-group {
             display: flex;
             gap: 4px;
@@ -309,6 +357,7 @@
             font-size: 14px;
             cursor: pointer;
             transition: var(--transition);
+            color: var(--color-text-main);
         }
 
         .icon-action-btn.fav-btn.active {
@@ -323,7 +372,6 @@
             color: #16a34a;
         }
 
-        /* タグ・バッジ */
         .badge-container {
             display: flex;
             flex-wrap: wrap;
@@ -339,8 +387,9 @@
         }
 
         .badge-cat {
-            background: #eff6ff;
+            background: var(--color-tag-bg);
             color: var(--color-accent);
+            border: 1px solid var(--color-border);
         }
 
         .badge-fac {
@@ -348,7 +397,6 @@
             color: var(--color-text-sub);
         }
 
-        /* 住所・マップリンク */
         .store-address-link {
             font-size: 12px;
             color: var(--color-text-sub);
@@ -364,11 +412,11 @@
             color: var(--color-accent);
         }
 
-        /* ガチャモーダル（洗練版） */
+        /* ガチャモーダル */
         .modal-backdrop {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.5);
+            background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
@@ -387,12 +435,13 @@
 
         .modal-card {
             background: var(--color-surface);
+            border: 1px solid var(--color-border);
             border-radius: var(--radius-base);
             padding: 32px;
             max-width: 400px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -420,7 +469,7 @@
 
         .btn-modal-action {
             background: var(--color-primary);
-            color: white;
+            color: var(--color-surface);
             border: none;
             width: 100%;
             padding: 12px;
@@ -432,11 +481,6 @@
             transition: var(--transition);
         }
 
-        .btn-modal-action:hover {
-            background: #1e293b;
-        }
-
-        /* レスポンシブ調整 */
         @media (max-width: 768px) {
             .search-panel {
                 grid-template-columns: 1fr;
@@ -451,10 +495,23 @@
                 width: 100%;
                 justify-content: center;
             }
+            .header-inner {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .theme-switcher {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .theme-btn {
+                flex: 1;
+                text-align: center;
+            }
         }
     </style>
 </head>
-<body>
+<body data-theme="modern">
 
 <!-- 公式サイト風ヘッダー -->
 <header class="official-header">
@@ -463,10 +520,16 @@
             <span class="brand-subtitle">Official Portal</span>
             <h1 class="brand-title">いい街こまつプレミアム</h1>
         </div>
+        <!-- デザインテーマ切り替えボタン -->
+        <div class="theme-switcher">
+            <button class="theme-btn active" onclick="setTheme('modern', this)">モダン</button>
+            <button class="theme-btn" onclick="setTheme('warm', this)">ウォーム</button>
+            <button class="theme-btn" onclick="setTheme('dark', this)">ダーク</button>
+        </div>
     </div>
 </header>
 
-<!-- ヒーローセクション（ガチャ機能） -->
+<!-- ヒーローセクション -->
 <section class="hero-section">
     <div class="hero-banner">
         <div class="hero-text">
@@ -481,7 +544,6 @@
 
 <!-- メインコンテンツ -->
 <main class="container">
-    <!-- 検索・フィルターパネル -->
     <div class="search-panel">
         <div class="input-group">
             <span class="input-icon">🔍</span>
@@ -495,17 +557,13 @@
         </div>
     </div>
 
-    <!-- 切り替えタブ -->
     <div class="filter-tabs">
         <button class="tab-btn active" onclick="setTab('all', this)">すべて</button>
         <button class="tab-btn" onclick="setTab('fav', this)">お気に入り</button>
         <button class="tab-btn" onclick="setTab('visited', this)">訪問済み</button>
     </div>
 
-    <!-- 件数カウンター -->
     <div class="results-meta" id="resultsCount">データを読み込んでいます...</div>
-
-    <!-- 店舗カード一覧 -->
     <div id="results" class="store-grid"></div>
 </main>
 
@@ -526,6 +584,24 @@
     
     let favorites = JSON.parse(localStorage.getItem('komatsu_favs') || '[]');
     let visited = JSON.parse(localStorage.getItem('komatsu_visited') || '[]');
+
+    // テーマ切り替え・保存機能
+    function setTheme(themeName, btn) {
+        document.documentElement.setAttribute('data-theme', themeName);
+        localStorage.setItem('komatsu_theme', themeName);
+        
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+    }
+
+    // 起動時に保存されたテーマを適用
+    const savedTheme = localStorage.getItem('komatsu_theme') || 'modern';
+    const initialBtn = Array.from(document.querySelectorAll('.theme-btn')).find(b => {
+        if (savedTheme === 'modern') return b.textContent === 'モダン';
+        if (savedTheme === 'warm') return b.textContent === 'ウォーム';
+        if (savedTheme === 'dark') return b.textContent === 'ダーク';
+    });
+    setTheme(savedTheme, initialBtn);
 
     async function loadStores() {
         try {
