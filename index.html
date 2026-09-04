@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>いい街こまつプレミアム 探せるナビ</title>
-    <!-- Google Fonts: Inter & Noto Sans JP -->
+    <title>いい街こまつプレミアム 取扱店公式ポータル</title>
+    <!-- Google Fonts: Plus Jakarta Sans & Noto Sans JP -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0284c7;
-            --primary-dark: #0369a1;
-            --accent: #f43f5e;
-            --bg-base: #f8fafc;
-            --surface: rgba(255, 255, 255, 0.85);
-            --surface-solid: #ffffff;
-            --text-main: #0f172a;
-            --text-sub: #64748b;
-            --border: #e2e8f0;
-            --shadow-glow: 0 20px 25px -5px rgba(2, 132, 199, 0.15);
-            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-            --radius-lg: 20px;
-            --radius-md: 14px;
-            --radius-full: 9999px;
+            --color-bg: #f8fafc;
+            --color-surface: #ffffff;
+            --color-primary: #0f172a;
+            --color-accent: #2563eb;
+            --color-accent-hover: #1d4ed8;
+            --color-text-main: #1e293b;
+            --color-text-sub: #64748b;
+            --color-border: #e2e8f0;
+            --color-tag-bg: #f1f5f9;
+            --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+            --shadow-float: 0 12px 32px -4px rgba(15, 23, 42, 0.08);
+            --radius-base: 16px;
+            --radius-pill: 9999px;
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -32,152 +32,186 @@
         }
 
         body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-family: 'Noto Sans JP', 'Plus Jakarta Sans', sans-serif;
             margin: 0;
-            padding: 0 0 100px;
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(2, 132, 199, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.05) 0px, transparent 50%);
-            background-attachment: fixed;
-            min-height: 100vh;
+            padding: 0 0 120px;
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ヘッダー */
-        .hero {
-            padding: 48px 24px 32px;
-            text-align: center;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        /* 公式サイト風ヘッダー */
+        .official-header {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-subtitle {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        /* メインビジュアル / ヒーローセクション */
+        .hero-section {
+            max-width: 900px;
+            margin: 32px auto 0;
+            padding: 0 24px;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             color: white;
-            border-bottom-left-radius: 32px;
-            border-bottom-right-radius: 32px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+            border-radius: var(--radius-base);
+            padding: 36px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-float);
             position: relative;
             overflow: hidden;
         }
 
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 6px 16px;
-            border-radius: var(--radius-full);
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .hero-banner::after {
+            content: "";
+            position: absolute;
+            right: -30px;
+            bottom: -30px;
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        .hero h1 {
+        .hero-text h2 {
             margin: 0 0 8px;
-            font-size: 28px;
-            font-weight: 900;
+            font-size: 24px;
+            font-weight: 700;
             letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .hero p {
+        .hero-text p {
             margin: 0;
             font-size: 13px;
             color: #94a3b8;
         }
 
-        /* コンテナ */
-        .container {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* ガチャ・おもしろ機能エリア */
-        .fun-action-area {
-            margin-top: -24px;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .btn-gacha {
-            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-            color: white;
+        .btn-gacha-official {
+            background: #ffffff;
+            color: var(--color-primary);
             border: none;
-            padding: 14px 24px;
-            border-radius: var(--radius-full);
+            padding: 12px 22px;
+            border-radius: var(--radius-pill);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(244, 63, 94, 0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
+            gap: 6px;
+            flex-shrink: 0;
         }
 
-        .btn-gacha:active {
-            transform: scale(0.95);
+        .btn-gacha-official:hover {
+            transform: translateY(-2px);
+            background: #f8fafc;
         }
 
-        /* ガラス風 検索コントロール */
-        .search-card {
-            background: var(--surface);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+        /* コンテナ */
+        .container {
+            max-width: 900px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+        }
+
+        /* 検索コントロール */
+        .search-panel {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
             padding: 20px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-glow);
+            border-radius: var(--radius-base);
+            box-shadow: var(--shadow-subtle);
             margin-bottom: 20px;
-        }
-
-        .search-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
-        .input-wrapper {
+        .input-group {
             position: relative;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--color-text-main);
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            transition: var(--transition);
+            appearance: none;
+        }
+
+        .input-group select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            background: var(--color-surface);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .input-icon {
             position: absolute;
-            left: 16px;
+            left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 16px;
-            pointer-events: none;
-        }
-
-        input[type="text"], select {
-            width: 100%;
-            padding: 14px 16px 14px 44px;
             font-size: 15px;
-            font-weight: 500;
-            color: var(--text-main);
-            background: var(--surface-solid);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-md);
-            transition: all 0.2s ease;
-            appearance: none;
-        }
-
-        select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 16px;
-            padding-right: 44px;
-        }
-
-        input[type="text"]:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+            color: var(--color-text-sub);
+            pointer-events: none;
         }
 
         /* フィルタータブ */
@@ -185,278 +219,304 @@
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 4px;
         }
 
         .tab-btn {
-            background: var(--surface-solid);
-            border: 1px solid var(--border);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
             padding: 8px 16px;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-pill);
             font-size: 13px;
-            font-weight: 600;
-            color: var(--text-sub);
+            font-weight: 500;
+            color: var(--color-text-sub);
             cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
 
         .tab-btn.active {
-            background: var(--text-main);
+            background: var(--color-primary);
             color: white;
-            border-color: var(--text-main);
+            border-color: var(--color-primary);
+            font-weight: 700;
         }
 
-        /* 検索結果ヘッダー */
-        .results-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
+        /* 件数表示 */
+        .results-meta {
             font-size: 13px;
             font-weight: 700;
-            color: var(--text-sub);
+            color: var(--color-text-sub);
+            margin-bottom: 16px;
         }
 
-        /* 店舗カードリスト */
-        .store-list {
+        /* 店舗グリッド・カード */
+        .store-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 16px;
         }
 
         .store-card {
-            background: var(--surface-solid);
-            border-radius: var(--radius-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
             padding: 20px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-card);
-            transition: all 0.25s ease;
+            box-shadow: var(--shadow-subtle);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             position: relative;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .store-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px -5px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-float);
+            border-color: #cbd5e1;
         }
 
-        .card-top {
+        .card-header-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .store-name {
-            font-size: 18px;
-            font-weight: 800;
-            margin: 0;
-            line-height: 1.35;
-        }
-
-        /* アクションボタン（お気に入り・行った） */
-        .card-actions {
-            display: flex;
-            gap: 6px;
-        }
-
-        .action-btn {
-            background: var(--bg-base);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-full);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s ease;
-        }
-
-        .action-btn.fav-btn.active {
-            background: #ffe4e6;
-            color: var(--accent);
-        }
-
-        .action-btn.visited-btn.active {
-            background: #dcfce7;
-        }
-
-        .tag-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
             margin-bottom: 12px;
         }
 
-        .badge {
-            font-size: 11px;
+        .store-title {
+            font-size: 16px;
             font-weight: 700;
-            padding: 4px 10px;
-            border-radius: var(--radius-full);
+            color: var(--color-primary);
+            margin: 0;
+            line-height: 1.4;
         }
 
-        .badge-category {
-            background: #e0f2fe;
-            color: var(--primary-dark);
+        /* アクションアイコンボタン */
+        .action-group {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
         }
 
-        .badge-facility {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        /* 地図リンク */
-        .store-address {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: var(--text-sub);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .store-address:hover {
-            color: var(--primary);
-        }
-
-        /* モーダル（ガチャ用） */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+        .icon-action-btn {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-action-btn.fav-btn.active {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #dc2626;
+        }
+
+        .icon-action-btn.visited-btn.active {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #16a34a;
+        }
+
+        /* タグ・バッジ */
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .official-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+        }
+
+        .badge-cat {
+            background: #eff6ff;
+            color: var(--color-accent);
+        }
+
+        .badge-fac {
+            background: var(--color-tag-bg);
+            color: var(--color-text-sub);
+        }
+
+        /* 住所・マップリンク */
+        .store-address-link {
+            font-size: 12px;
+            color: var(--color-text-sub);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .store-address-link:hover {
+            color: var(--color-accent);
+        }
+
+        /* ガチャモーダル（洗練版） */
+        .modal-backdrop {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
 
-        .modal-overlay.active {
+        .modal-backdrop.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .modal-body {
-            background: white;
-            padding: 32px 24px;
-            border-radius: var(--radius-lg);
-            max-width: 440px;
+        .modal-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-base);
+            padding: 32px;
+            max-width: 400px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .modal-overlay.active .modal-body {
+        .modal-backdrop.active .modal-card {
             transform: scale(1);
         }
 
-        .modal-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--accent);
+        .modal-eyebrow {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--color-accent);
             text-transform: uppercase;
-            letter-spacing: 1px;
             margin-bottom: 8px;
         }
 
-        .modal-store-name {
-            font-size: 22px;
-            font-weight: 900;
+        .modal-store-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
             margin: 0 0 16px;
         }
 
-        .btn-modal-close {
-            background: var(--text-main);
+        .btn-modal-action {
+            background: var(--color-primary);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: var(--radius-full);
-            font-weight: 700;
-            cursor: pointer;
             width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
             margin-top: 20px;
+            transition: var(--transition);
         }
 
-        @media (min-width: 640px) {
-            .hero h1 { font-size: 36px; }
-            .search-grid { grid-template-columns: 1fr 1fr; }
+        .btn-modal-action:hover {
+            background: #1e293b;
+        }
+
+        /* レスポンシブ調整 */
+        @media (max-width: 768px) {
+            .search-panel {
+                grid-template-columns: 1fr;
+            }
+            .hero-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 24px;
+            }
+            .btn-gacha-official {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
 
-<header class="hero">
-    <span class="hero-badge">2026 EDITION</span>
-    <h1>いい街こまつプレミアム</h1>
-    <p>取扱店 スマート検索ナビ</p>
+<!-- 公式サイト風ヘッダー -->
+<header class="official-header">
+    <div class="header-inner">
+        <div class="brand-logo-area">
+            <span class="brand-subtitle">Official Portal</span>
+            <h1 class="brand-title">いい街こまつプレミアム</h1>
+        </div>
+    </div>
 </header>
 
-<main class="container">
-    <!-- ガチャボタン -->
-    <div class="fun-action-area">
-        <button class="btn-gacha" onclick="runGacha()">
-            <span>🎲</span> 今日どこ行く？ガチャ
+<!-- ヒーローセクション（ガチャ機能） -->
+<section class="hero-section">
+    <div class="hero-banner">
+        <div class="hero-text">
+            <h2>取扱店・加盟店スマート検索</h2>
+            <p>お店選びに迷ったら、おすすめ店舗をランダムでご提案します。</p>
+        </div>
+        <button class="btn-gacha-official" onclick="runGacha()">
+            <span>🎲</span> 本日のピックアップ
         </button>
     </div>
+</section>
 
-    <!-- 検索フィルター -->
-    <section class="search-card">
-        <div class="search-grid">
-            <div class="input-wrapper">
-                <span class="input-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="店舗名・キーワード...">
-            </div>
-            <div class="input-wrapper">
-                <span class="input-icon">🏷️</span>
-                <select id="categorySelect">
-                    <option value="">すべてのジャンル</option>
-                </select>
-            </div>
+<!-- メインコンテンツ -->
+<main class="container">
+    <!-- 検索・フィルターパネル -->
+    <div class="search-panel">
+        <div class="input-group">
+            <span class="input-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="店舗名、キーワードで検索...">
         </div>
-    </section>
+        <div class="input-group">
+            <span class="input-icon">📂</span>
+            <select id="categorySelect">
+                <option value="">すべてのカテゴリー</option>
+            </select>
+        </div>
+    </div>
 
-    <!-- 絞り込みタブ -->
+    <!-- 切り替えタブ -->
     <div class="filter-tabs">
         <button class="tab-btn active" onclick="setTab('all', this)">すべて</button>
-        <button class="tab-btn" onclick="setTab('fav', this)">❤️ お気に入り</button>
-        <button class="tab-btn" onclick="setTab('visited', this)">✅ 行ったお店</button>
+        <button class="tab-btn" onclick="setTab('fav', this)">お気に入り</button>
+        <button class="tab-btn" onclick="setTab('visited', this)">訪問済み</button>
     </div>
 
-    <!-- 結果カウント -->
-    <div class="results-header">
-        <span id="resultsCount">ロード中...</span>
-    </div>
+    <!-- 件数カウンター -->
+    <div class="results-meta" id="resultsCount">データを読み込んでいます...</div>
 
-    <!-- 店舗リスト -->
-    <div id="results" class="store-list"></div>
+    <!-- 店舗カード一覧 -->
+    <div id="results" class="store-grid"></div>
 </main>
 
-<!-- ガチャ結果モーダル -->
-<div id="gachaModal" class="modal-overlay">
-    <div class="modal-body">
-        <div class="modal-title">✨ TODAY'S PICK UP ✨</div>
-        <div id="gachaResultCategory" class="badge badge-category" style="display:inline-block; margin-bottom: 8px;"></div>
-        <h2 id="gachaResultName" class="modal-store-name">店舗名</h2>
-        <a id="gachaResultMap" href="#" target="_blank" class="store-address">📍 Google Mapsでみる</a>
-        <button class="btn-modal-close" onclick="closeGacha()">ここに行く！</button>
+<!-- ガチャモーダル -->
+<div id="gachaModal" class="modal-backdrop">
+    <div class="modal-card">
+        <div class="modal-eyebrow">Recommended Pick</div>
+        <div id="gachaCatBadge" class="official-badge badge-cat" style="display:inline-block; margin-bottom: 8px;"></div>
+        <h3 id="gachaName" class="modal-store-title">店名</h3>
+        <a id="gachaMapLink" href="#" target="_blank" class="store-address-link" style="justify-content: center;">📍 Google Mapsでルートを確認</a>
+        <button class="btn-modal-action" onclick="closeGacha()">閉じる</button>
     </div>
 </div>
 
@@ -464,15 +524,13 @@
     let allStores = [];
     let currentTab = 'all';
     
-    // LocalStorageから状態を復元（保存機能）
     let favorites = JSON.parse(localStorage.getItem('komatsu_favs') || '[]');
     let visited = JSON.parse(localStorage.getItem('komatsu_visited') || '[]');
 
     async function loadStores() {
         try {
-            // ⚠️ GitHub上のファイル名に合わせて変更してください
             const response = await fetch('komatsu_premium_merchants_2026.json');
-            if (!response.ok) throw new Error('読み込み失敗');
+            if (!response.ok) throw new Error('Network error');
             
             const data = await response.json();
             
@@ -509,8 +567,8 @@
 
         } catch (error) {
             document.getElementById('results').innerHTML = `
-                <div style="text-align:center; padding: 40px; color: var(--accent);">
-                    データの読み込みに失敗しました。<br>ファイル名を確認してください。
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">
+                    データの読み込みに失敗しました。ファイル名や配置場所をご確認ください。
                 </div>`;
         }
     }
@@ -526,13 +584,12 @@
         });
     }
 
-    // フィルタリング＆表示
     function filterStores() {
         const query = document.getElementById('searchInput').value.trim().toLowerCase();
         const selectedCat = document.getElementById('categorySelect').value;
 
         const filtered = allStores.filter(store => {
-            const matchCategory = !selectedCat || store.category === selectedCat;
+            const matchCat = !selectedCat || store.category === selectedCat;
             const matchQuery = !query || 
                                store.name.toLowerCase().includes(query) || 
                                store.address.toLowerCase().includes(query) ||
@@ -542,7 +599,7 @@
             if (currentTab === 'fav') matchTab = favorites.includes(store.id);
             if (currentTab === 'visited') matchTab = visited.includes(store.id);
 
-            return matchCategory && matchQuery && matchTab;
+            return matchCat && matchQuery && matchTab;
         });
 
         renderStores(filtered);
@@ -553,10 +610,13 @@
         const countEl = document.getElementById('resultsCount');
         container.innerHTML = '';
 
-        countEl.textContent = `${stores.length} 件が見つかりました`;
+        countEl.textContent = `検索結果: ${stores.length} 件`;
 
         if (stores.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-sub);">該当する店舗がありません</div>`;
+            container.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--color-text-sub);">
+                    該当する店舗・施設が見つかりませんでした。
+                </div>`;
             return;
         }
 
@@ -568,30 +628,31 @@
             const card = document.createElement('article');
             card.className = 'store-card';
             card.innerHTML = `
-                <div class="card-top">
-                    <h2 class="store-name">${escapeHtml(store.name)}</h2>
-                    <div class="card-actions">
-                        <button class="action-btn fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${escapeHtml(store.id)}')">
-                            ${isFav ? '❤️' : '🤍'}
-                        </button>
-                        <button class="action-btn visited-btn ${isVisited ? 'active' : ''}" onclick="toggleVisited('${escapeHtml(store.id)}')">
-                            ${isVisited ? '✅' : '⚪'}
-                        </button>
+                <div>
+                    <div class="card-header-row">
+                        <h3 class="store-title">${escapeHtml(store.name)}</h3>
+                        <div class="action-group">
+                            <button class="icon-action-btn fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${escapeHtml(store.id)}')">
+                                ${isFav ? '♥' : '♡'}
+                            </button>
+                            <button class="icon-action-btn visited-btn ${isVisited ? 'active' : ''}" onclick="toggleVisited('${escapeHtml(store.id)}')">
+                                ${isVisited ? '✓' : '·'}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="badge-container">
+                        <span class="official-badge badge-cat">${escapeHtml(store.category)}</span>
+                        ${store.locationType !== '独立店舗' ? `<span class="official-badge badge-fac">${escapeHtml(store.locationType)}</span>` : ''}
                     </div>
                 </div>
-                <div class="tag-group">
-                    <span class="badge badge-category">${escapeHtml(store.category)}</span>
-                    ${store.locationType !== '独立店舗' ? `<span class="badge badge-facility">🏬 ${escapeHtml(store.locationType)}</span>` : ''}
-                </div>
-                <a href="${mapUrl}" target="_blank" class="store-address">
-                    📍 ${escapeHtml(store.address)} ↗
+                <a href="${mapUrl}" target="_blank" class="store-address-link">
+                    📍 ${escapeHtml(store.address)}
                 </a>
             `;
             container.appendChild(card);
         });
     }
 
-    // お気に入り・行った機能のロジック
     function toggleFav(id) {
         if (favorites.includes(id)) {
             favorites = favorites.filter(i => i !== id);
@@ -619,14 +680,13 @@
         filterStores();
     }
 
-    // ガチャ機能
     function runGacha() {
         if (allStores.length === 0) return;
         const randomStore = allStores[Math.floor(Math.random() * allStores.length)];
         
-        document.getElementById('gachaResultName').textContent = randomStore.name;
-        document.getElementById('gachaResultCategory').textContent = randomStore.category;
-        document.getElementById('gachaResultMap').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('石川県小松市 ' + randomStore.name)}`;
+        document.getElementById('gachaName').textContent = randomStore.name;
+        document.getElementById('gachaCatBadge').textContent = randomStore.category;
+        document.getElementById('gachaMapLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('石川県小松市 ' + randomStore.name)}`;
         
         document.getElementById('gachaModal').classList.add('active');
     }
