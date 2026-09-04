@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>取扱店検索 - いい街こまつプレミアム</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; }
+    .search-box { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    input, select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; flex: 1; min-width: 200px; }
+    .store-count { margin-bottom: 15px; font-weight: bold; color: #555; }
+    .store-card { border: 1px solid #e0e0e0; padding: 15px; border-radius: 6px; margin-bottom: 12px; background: #fff; }
+    .store-name { font-weight: bold; font-size: 1.1em; color: #333; margin-bottom: 6px; }
+    .store-info { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 0.9em; color: #666; }
+    .badge { background: #eef2f5; color: #334e68; padding: 3px 8px; border-radius: 4px; font-size: 0.85em; }
+    .type-badge { background: #e3f2fd; color: #0d47a1; }
+  </style>
+</head>
+<body>
+
+  <h1>取扱店検索</h1>
+
+  <div class="search-box">
+    <input type="text" id="keywordInput" placeholder="店舗名・住所で検索...">
+    <select id="categorySelect">
+      <option value="">すべてのカテゴリー</option>
+    </select>
+  </div>
+
+  <div class="store-count" id="storeCount">読み込み中...</div>
+  <div id="storeList"></div>
+
+  <script>
+    let allStores = [];
+
+    // JSONファイルを外部から読み込む
+    async function loadStores() {
+      try {
+        const response = await fetch('komatsu_premium_merchants_2026_2.json');
+        if (!response.ok) throw new Error('データの読み込みに失敗しました');
+        
+        const data = await response.json();
+        allStores = parseStoreData(data);
+
+        setupCategoryFilter(allStores);
+        renderStores(allStores);
+      } catch (error) {
+        console.error(error);
+        document.getElementById('storeCount').textContent = '';
+        document.getElementById('storeList').innerHTML = '<p style="color:red;">JSONファイルの読み込みエラーが発生しました。Webサーバー経由でアクセスしているか確認してください。</p>';
+      }
+    }
+
+    // 構造の異なる「大型施設」と「単独店舗」のデータを統一フォーマットに整形
+    function parseStoreData(data) {
+      const stores = [];
+
+      // 大型施設内の店舗
+      if (data.complex_facilities) {
+        data.complex_facilities.forEach(facility => {
+          facility.stores.forEach(s => {
+            stores.push({
+              name: s.store_name,
+              category: s.category,
+              address: `${facility.facility_name} (${facility.address})`,
+              type: '大型施設内'
+            });
+          });
+        });
+      }
+
+      // カテゴリー別単独店舗
+      if (data.independent_stores_by_category) {
+        Object.entries(data.independent_stores_by_category).forEach(([category, list]) => {
+          list.forEach(s => {
+            stores.push({
+              name: s.store_name,
+              category: category,
+              address: s.address,
+              type: '路面・単独店'
+            });
+          });
+        });
+      }
+
+      return stores;
+    }
+
+    // カテゴリー選択肢の生成
+    function setupCategoryFilter(stores) {
+      const categories = [...new Set(stores.map(s => s.category))].sort();
+      const select = document.getElementById('categorySelect');
+      categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        select.appendChild(option);
+      });
+    }
+
+    // 店舗一覧の描画
+    function renderStores(list) {
+      const container = document.getElementById('storeList');
+      const countEl = document.getElementById('storeCount');
+
+      countEl.textContent = `該当件数: ${list.length} 件`;
+      container.innerHTML = '';
+
+      if (list.length === 0) {
+        container.innerHTML = '<p>条件に一致する店舗が見つかりませんでした。</p>';
+        return;
+      }
+
+      list.forEach(store => {
+        const card = document.createElement('div');
+        card.className = 'store-card';
+        card.innerHTML = `
+          <div class="store-name">${store.name}</div>
+          <div class="store-info">
+            <span class="badge type-badge">${store.type}</span>
+            <span class="badge">${store.category}</span>
+            <span>📍 ${store.address}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 検索フィルタリング
+    function filterStores() {
+      const keyword = document.getElementById('keywordInput').value.toLowerCase().trim();
+      const selectedCategory = document.getElementById('categorySelect').value;
+
+      const filtered = allStores.filter(store => {
+        const matchesKeyword = store.name.toLowerCase().includes(keyword) || store.address.toLowerCase().includes(keyword);
+        const matchesCategory = !selectedCategory || store.category === selectedCategory;
+        return matchesKeyword && matchesCategory;
+      });
+
+      renderStores(filtered);
+    }
+
+    // イベント設定
+    document.getElementById('keywordInput').addEventListener('input', filterStores);
+    document.getElementById('categorySelect').addEventListener('change', filterStores);
+
+    // 初期化実行
+    loadStores();
+  </script>
+</body>
+</html>
